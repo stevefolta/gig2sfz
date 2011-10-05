@@ -120,7 +120,7 @@ void convert_gig_region(gig::Region* region, ostream& sfz)
 		for (int which_dim_rgn = 0; which_dim_rgn < region->DimensionRegions; ++which_dim_rgn) {
 			gig::DimensionRegion* dim_rgn = region->pDimensionRegions[which_dim_rgn];
 			sfz << "<region>" << endl;
-			sfz << "sample=" << dim_rgn->pSample->pInfo->Name << endl;
+			sfz << "sample=" << dim_rgn->pSample->pInfo->Name << ".wav" << endl;
 			sfz << "pitch_keycenter=" << (int) dim_rgn->UnityNote << endl;
 			if (dim_rgn->FineTune)
 				sfz << "tune=" << gig_fine_tune_to_cents(dim_rgn->FineTune) << endl;
