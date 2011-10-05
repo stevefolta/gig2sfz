@@ -1,0 +1,22 @@
+#!/bin/bash
+
+gig_file="$1"
+if [ -z "$gig_file" ]; then
+	echo "Usage:"
+	echo "cd to the directory you want to extract everything to"
+	echo "and do this:"
+	echo "  convert-gig-file <gig file>"
+	exit 1
+	fi
+
+gigextract "$gig_file" .
+
+# gigextract stupidly prepends the index to the .wav file names,
+# so strip it off.
+for file in *.wav; do
+	echo mv -i "$file" "${file#*_}"
+	mv -i "$file" "${file#*_}"
+	done
+
+gig2sfz "$gig_file"
+
