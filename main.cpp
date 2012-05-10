@@ -126,6 +126,12 @@ void convert_gig_region(gig::Region* region, ostream& sfz)
 				sfz << "tune=" << gig_fine_tune_to_cents(dim_rgn->FineTune) << endl;
 			if (dim_rgn->Gain)
 				sfz << "volume=" << (-dim_rgn->Gain / 655360.0) << endl;
+			if (dim_rgn->SampleLoops > 0) {
+				DLS::sample_loop_t* loop = &dim_rgn->pSampleLoops[0];
+				sfz << "loop_mode=loop_continuous ";
+				sfz << "loop_start=" << loop->LoopStart << " ";
+				sfz << "loop_end=" << loop->LoopStart + loop->LoopLength - 1 << endl;
+				}
 			for (int dim = 0; dim < num_dimensions; ++dim) {
 				Dimension* dimension = &dimensions[dim];
 				switch (dimension->type) {
@@ -133,7 +139,7 @@ void convert_gig_region(gig::Region* region, ostream& sfz)
 						{
 							int loval =
 								(which_dim_rgn & dimension->mask) << (6 - dimension->top_bit);
-							sfz << "lovel=" << loval << endl;
+							sfz << "lovel=" << loval << " ";
 							int range = (0x80 >> dimension->bits) - 1;
 							sfz << "hivel=" << loval + range << endl;
 						}
